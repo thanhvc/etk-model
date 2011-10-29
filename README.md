@@ -1,5 +1,6 @@
 # Enginerring Toolkit Kernel Java Library
-
+Note:
+- Always to use bellow command for first to make sure that "xxx-test.jar" to package for JCR, Identity, MOP, MOS...etc.
 
 ## How to develop
 
@@ -47,7 +48,8 @@ Or add the eXo platform repository in your maven settings (`${HOME}/.m2/settings
 
 ### Default build
 
-Use this command to build project:
+Use this command to build project: 
+
 
     mvn clean install
 
