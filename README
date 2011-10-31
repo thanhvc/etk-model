@@ -1,0 +1,43 @@
+Note:
+
+Please install the Postgres and edit configure file in:
+
+/home/thanh_vucong/java/etkProjects/etk-model/test/core/src/test/resources/conf/portal-config.xml
+
+ <!--
+        <properties-param>
+          <name>ref-addresses</name>
+          <description>ref-addresses</description>
+          <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+          <property name="url" value="jdbc:hsqldb:file:${gatein.test.tmp.dir}/db/data/jdbcjcr"/>
+          <property name="username" value="sa"/>
+          <property name="password" value=""/>
+        </properties-param>-->
+        <properties-param>
+          <name>ref-addresses</name>
+          <description>ref-addresses</description>
+          <property name="driverClassName" value="org.postgresql.Driver"/>
+          <property name="url" value="jdbc:postgresql://localhost/jcr"/>
+          <property name="username" value="root"/>
+          <property name="password" value="gtn"/>
+        </properties-param>
+
+And /home/thanh_vucong/java/etkProjects/etk-model/test/core/src/main/resources/conf/portal-config.xml
+
+<!--
+        <properties-param>
+          <name>ref-addresses</name>
+          <description>ref-addresses</description>
+          <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+          <property name="url" value="jdbc:hsqldb:file:${gatein.test.tmp.dir}/db/data/jdbcjcr"/>
+          <property name="username" value="sa"/>
+          <property name="password" value=""/>
+        </properties-param>-->
+        <properties-param>
+          <name>ref-addresses</name>
+          <description>ref-addresses</description>
+          <property name="driverClassName" value="org.postgresql.Driver"/>
+          <property name="url" value="jdbc:postgresql://localhost/jcr"/>
+          <property name="username" value="root"/>
+          <property name="password" value="gtn"/>
+        </properties-param>

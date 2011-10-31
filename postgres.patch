@@ -1,0 +1,346 @@
+diff --git a/README b/README
+index e69de29..08d1925 100644
+--- a/README
++++ b/README
+@@ -0,0 +1,43 @@
++Note:
++
++Please install the Postgres and edit configure file in:
++
++/home/thanh_vucong/java/etkProjects/etk-model/test/core/src/test/resources/conf/portal-config.xml
++
++ <!--
++        <properties-param>
++          <name>ref-addresses</name>
++          <description>ref-addresses</description>
++          <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
++          <property name="url" value="jdbc:hsqldb:file:${gatein.test.tmp.dir}/db/data/jdbcjcr"/>
++          <property name="username" value="sa"/>
++          <property name="password" value=""/>
++        </properties-param>-->
++        <properties-param>
++          <name>ref-addresses</name>
++          <description>ref-addresses</description>
++          <property name="driverClassName" value="org.postgresql.Driver"/>
++          <property name="url" value="jdbc:postgresql://localhost/jcr"/>
++          <property name="username" value="root"/>
++          <property name="password" value="gtn"/>
++        </properties-param>
++
++And /home/thanh_vucong/java/etkProjects/etk-model/test/core/src/main/resources/conf/portal-config.xml
++
++<!--
++        <properties-param>
++          <name>ref-addresses</name>
++          <description>ref-addresses</description>
++          <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
++          <property name="url" value="jdbc:hsqldb:file:${gatein.test.tmp.dir}/db/data/jdbcjcr"/>
++          <property name="username" value="sa"/>
++          <property name="password" value=""/>
++        </properties-param>-->
++        <properties-param>
++          <name>ref-addresses</name>
++          <description>ref-addresses</description>
++          <property name="driverClassName" value="org.postgresql.Driver"/>
++          <property name="url" value="jdbc:postgresql://localhost/jcr"/>
++          <property name="username" value="root"/>
++          <property name="password" value="gtn"/>
++        </properties-param>
+diff --git a/identity/pom.xml b/identity/pom.xml
+index 28dc13c..94fcadc 100644
+--- a/identity/pom.xml
++++ b/identity/pom.xml
+@@ -65,6 +65,12 @@
+         <artifactId>hsqldb</artifactId>
+         <scope>test</scope>
+      </dependency>
++    <dependency>
++      <groupId>postgresql</groupId>
++      <artifactId>postgresql</artifactId>
++      <version>8.4-702.jdbc4</version>
++      <scope>runtime</scope>
++    </dependency>
+      <dependency>
+       <groupId>org.etk.model</groupId>
+       <artifactId>org.etk.model.test.core</artifactId>
+diff --git a/identity/src/test/resources/conf/exo.portal.component.identity-configuration.xml b/identity/src/test/resources/conf/exo.portal.component.identity-configuration.xml
+index b526be2..c098189 100644
+--- a/identity/src/test/resources/conf/exo.portal.component.identity-configuration.xml
++++ b/identity/src/test/resources/conf/exo.portal.component.identity-configuration.xml
+@@ -79,7 +79,8 @@
+             <!--CHANGEME HashtableCacheProvider shold not be used in production env-->
+             <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/>
+             <property name="hibernate.connection.datasource" value="jdbcidm"/>
+-            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
++            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>-->
++            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+             <property name="hibernate.c3p0.min_size" value="5"/>
+             <property name="hibernate.c3p0.max_size" value="20"/>
+             <property name="hibernate.c3p0.timeout" value="1800"/>
+@@ -135,10 +136,15 @@
+         <properties-param>
+           <name>ref-addresses</name>
+           <description>ref-addresses</description>
+-          <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
++          <!--<property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+           <property name="url" value="jdbc:hsqldb:file:${gatein.test.tmp.dir}/db/data/jdbcidm"/>
+           <property name="username" value="sa"/>
+-          <property name="password" value=""/>
++          <property name="password" value=""/>-->
++
++          <property name="driverClassName" value="org.postgresql.Driver"/>
++          <property name="url" value="jdbc:postgresql://localhost/exodb"/>
++          <property name="username" value="root"/>
++          <property name="password" value="gtn"/>
+         </properties-param>
+       </init-params>
+     </component-plugin>
+diff --git a/identity/src/test/resources/org/exoplatform/services/organization/TestOrganizationService-configuration.xml b/identity/src/test/resources/org/exoplatform/services/organization/TestOrganizationService-configuration.xml
+index fac1faf..f67cf31 100644
+--- a/identity/src/test/resources/org/exoplatform/services/organization/TestOrganizationService-configuration.xml
++++ b/identity/src/test/resources/org/exoplatform/services/organization/TestOrganizationService-configuration.xml
+@@ -74,10 +74,15 @@
+         <properties-param>
+            <name>default</name>
+            <description>Connection configuration</description>
++           <!--
+            <property name='connection.driver' value='org.hsqldb.jdbcDriver' />
+            <property name='connection.url' value='jdbc:hsqldb:mem:db/default' />
+            <property name='connection.login' value='sa' />
+-           <property name='connection.password' value='' />
++           <property name='connection.password' value='' />-->
++           <property name='connection.driver' value='org.postgresql.Driver' />
++           <property name='connection.url' value='jdbc:postgresql://localhost/default' />
++           <property name='connection.login' value='root' />
++           <property name='connection.password' value='gtn' />
+            <property name='connection.min-size' value='3' />
+            <property name='connection.max-size' value='5' />
+         </properties-param>
+@@ -169,12 +174,17 @@
+         <property name="hibernate.cache.use_query_cache" value="true"/>
+         <!--CHANGEME HashtableCacheProvider shold not be used in production env-->
+         <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/>
+-        <property name="hibernate.connection.url" value="jdbc:hsqldb:file:${basedir}/target/temp/data/exodb${container.name.suffix}"/>
+-        <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
++        <!--<property name="hibernate.connection.url" value="jdbc:hsqldb:file:${basedir}/target/temp/data/exodb${container.name.suffix}"/>-->
++        <!--<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>-->
++        <!--<property name="hibernate.connection.username" value="sa"/>
++        <property name="hibernate.connection.password" value=""/>-->
++        <!--<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>-->
++        <property name="hibernate.connection.url" value="jdbc:postgresql://localhost/exodb"/>
++        <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+         <property name="hibernate.connection.autocommit" value="true"/>
+-        <property name="hibernate.connection.username" value="sa"/>
+-        <property name="hibernate.connection.password" value=""/>
+-        <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
++        <property name="hibernate.connection.username" value="root"/>
++        <property name="hibernate.connection.password" value="gtn"/>
++        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+         <property name="hibernate.c3p0.min_size" value="5"/>
+         <property name="hibernate.c3p0.max_size" value="20"/>
+         <property name="hibernate.c3p0.timeout" value="1800"/>
+diff --git a/mop/pom.xml b/mop/pom.xml
+index 926ef69..175a391 100644
+--- a/mop/pom.xml
++++ b/mop/pom.xml
+@@ -99,10 +99,10 @@
+       <artifactId>logback-classic</artifactId>
+       <scope>provided</scope>
+     </dependency>
+-    <dependency>
+-      <groupId>org.hsqldb</groupId>
+-      <artifactId>hsqldb</artifactId>
+-      <version>${org.hsqldb.version}</version>
++   <dependency>
++      <groupId>postgresql</groupId>
++      <artifactId>postgresql</artifactId>
++      <version>8.4-702.jdbc4</version>
+       <scope>runtime</scope>
+     </dependency>
+   </dependencies>
+diff --git a/pom.xml b/pom.xml
+index 08c02f0..82c4626 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -228,7 +228,6 @@
+             <groupId>org.exoplatform.core</groupId>
+             <artifactId>exo.core.component.organization.jdbc</artifactId>
+             <version>${org.exoplatform.core.version}</version>
+-           
+          </dependency>
+          <dependency>
+             <groupId>org.exoplatform.core</groupId>
+@@ -277,6 +276,11 @@
+             <version>${org.exoplatform.jcr.version}</version>
+          </dependency>
+          <dependency>
++            <groupId>postgresql</groupId>
++            <artifactId>postgresql</artifactId>
++            <version>8.4-702.jdbc4</version>
++         </dependency>
++         <dependency>
+             <groupId>org.exoplatform.ws</groupId>
+             <artifactId>exo.ws.frameworks.servlet</artifactId>
+             <version>${org.exoplatform.ws.version}</version>
+@@ -884,25 +888,7 @@
+     </pluginManagement>
+ 
+     <plugins>
+-      <plugin>
+-        <groupId>org.apache.maven.plugins</groupId>
+-        <artifactId>maven-surefire-plugin</artifactId>
+-        <configuration>
+-          <!-- export DYLD_LIBRARY_PATH=/Users/thanh_vucong/java/jprofiler5/bin/macos -->
+-          <!--<argLine>-agentlib:jprofilerti=port=8849 -Xbootclasspath/a:/Users/thanh_vucong/java/jprofiler5/bin/agent.jar</argLine>-->
+-          <systemProperties>
+-            <property>
+-              <name>com.arjuna.ats.arjuna.objectstore.objectStoreDir</name>
+-              <value>${project.build.directory}</value>
+-            </property>
+-            <property>
+-              <name>log.output.path</name>
+-              <value>${project.build.directory}</value>
+-            </property>
+-          </systemProperties>
+-        </configuration>
+-      </plugin>
+-      <plugin>
++     <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-release-plugin</artifactId>
+         <configuration>
+diff --git a/test/core/pom.xml b/test/core/pom.xml
+index 6751564..835a479 100644
+--- a/test/core/pom.xml
++++ b/test/core/pom.xml
+@@ -76,11 +76,16 @@
+       <groupId>org.hsqldb</groupId>
+       <artifactId>hsqldb</artifactId>
+       <version>${org.hsqldb.version}</version>
+-    <scope>runtime</scope>
+-</dependency>
+-  </dependencies>
+-
++      <scope>runtime</scope>
++    </dependency>
+ 
++    <dependency>
++      <groupId>postgresql</groupId>
++      <artifactId>postgresql</artifactId>
++      <version>8.4-702.jdbc4</version>
++      <scope>runtime</scope>
++    </dependency>
++  </dependencies>
+ 
+   <build>
+     <resources>
+diff --git a/test/core/src/main/java/conf/portal-configuration.xml b/test/core/src/main/java/conf/portal-configuration.xml
+index e2f74fe..f4de3ba 100644
+--- a/test/core/src/main/java/conf/portal-configuration.xml
++++ b/test/core/src/main/java/conf/portal-configuration.xml
+@@ -60,6 +60,7 @@
+           <name>factory</name>
+           <value>org.apache.commons.dbcp.BasicDataSourceFactory</value>
+         </value-param>
++       <!--
+         <properties-param>
+           <name>ref-addresses</name>
+           <description>ref-addresses</description>
+@@ -67,6 +68,14 @@
+           <property name="url" value="jdbc:hsqldb:file:${gatein.test.tmp.dir}/db/data/jdbcjcr"/>
+           <property name="username" value="sa"/>
+           <property name="password" value=""/>
++        </properties-param>-->
++        <properties-param>
++          <name>ref-addresses</name>
++          <description>ref-addresses</description>
++          <property name="driverClassName" value="org.postgresql.Driver"/>
++          <property name="url" value="jdbc:postgresql://localhost/jcr"/>
++          <property name="username" value="root"/>
++          <property name="password" value="gtn"/>
+         </properties-param>
+       </init-params>
+     </component-plugin>
+diff --git a/test/core/src/main/resources/conf/portal-configuration.xml b/test/core/src/main/resources/conf/portal-configuration.xml
+index b7f2976..2eeb03b 100644
+--- a/test/core/src/main/resources/conf/portal-configuration.xml
++++ b/test/core/src/main/resources/conf/portal-configuration.xml
+@@ -61,6 +61,7 @@
+           <name>factory</name>
+           <value>org.apache.commons.dbcp.BasicDataSourceFactory</value>
+         </value-param>
++        <!--
+         <properties-param>
+           <name>ref-addresses</name>
+           <description>ref-addresses</description>
+@@ -68,8 +69,17 @@
+           <property name="url" value="jdbc:hsqldb:file:${gatein.test.tmp.dir}/db/data/jdbcjcr"/>
+           <property name="username" value="sa"/>
+           <property name="password" value=""/>
++        </properties-param>-->
++        <properties-param>
++          <name>ref-addresses</name>
++          <description>ref-addresses</description>
++          <property name="driverClassName" value="org.postgresql.Driver"/>
++          <property name="url" value="jdbc:postgresql://localhost/jcr"/>
++          <property name="username" value="root"/>
++          <property name="password" value="gtn"/>
+         </properties-param>
+ 
++
+       </init-params>
+     </component-plugin>
+   </external-component-plugins>
+diff --git a/test/core/src/test/resources/conf/portal-configuration.xml b/test/core/src/test/resources/conf/portal-configuration.xml
+index b7f2976..8079b6b 100644
+--- a/test/core/src/test/resources/conf/portal-configuration.xml
++++ b/test/core/src/test/resources/conf/portal-configuration.xml
+@@ -61,6 +61,7 @@
+           <name>factory</name>
+           <value>org.apache.commons.dbcp.BasicDataSourceFactory</value>
+         </value-param>
++        <!--
+         <properties-param>
+           <name>ref-addresses</name>
+           <description>ref-addresses</description>
+@@ -68,6 +69,14 @@
+           <property name="url" value="jdbc:hsqldb:file:${gatein.test.tmp.dir}/db/data/jdbcjcr"/>
+           <property name="username" value="sa"/>
+           <property name="password" value=""/>
++        </properties-param>-->
++        <properties-param>
++          <name>ref-addresses</name>
++          <description>ref-addresses</description>
++          <property name="driverClassName" value="org.postgresql.Driver"/>
++          <property name="url" value="jdbc:postgresql://localhost/jcr"/>
++          <property name="username" value="root"/>
++          <property name="password" value="gtn"/>
+         </properties-param>
+ 
+       </init-params>
+diff --git a/test/jcr/pom.xml b/test/jcr/pom.xml
+index 4b6abcf..022b892 100644
+--- a/test/jcr/pom.xml
++++ b/test/jcr/pom.xml
+@@ -36,7 +36,7 @@
+     <dependency>
+       <groupId>org.etk.model</groupId>
+       <artifactId>org.etk.model.test.core</artifactId>
+-      <scope>provided</scope>
++      <scope>test</scope>
+     </dependency>
+     <dependency>
+       <groupId>org.etk.model</groupId>
+@@ -70,6 +70,12 @@
+       <version>${org.hsqldb.version}</version>
+       <scope>runtime</scope>
+     </dependency>
++    <dependency>
++      <groupId>postgresql</groupId>
++      <artifactId>postgresql</artifactId>
++      <version>8.4-702.jdbc4</version>
++      <scope>runtime</scope>
++    </dependency>
+   </dependencies>
+   
+   <build>
