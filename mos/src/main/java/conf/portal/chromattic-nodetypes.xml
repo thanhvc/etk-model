@@ -28,6 +28,20 @@
       </childNodeDefinition>
     </childNodeDefinitions>
   </nodeType>
+   <nodeType name="soc:bookdefinition" isMixin="false" hasOrderableChildNodes="false">
+    <supertypes>
+      <supertype>nt:base</supertype>
+      <supertype>mix:referenceable</supertype>
+    </supertypes>
+    <propertyDefinitions>
+      <propertyDefinition name="soc:parentId" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+      <propertyDefinition name="*" requiredType="undefined" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="true">
+        <valueConstraints/>
+      </propertyDefinition>
+    </propertyDefinitions>
+  </nodeType>
   <!-- Node type generated for the class org.exoplatform.social.core.chromattic.entity.IdentityEntity -->
   <nodeType name="soc:identitydefinition" isMixin="false" hasOrderableChildNodes="false">
     <supertypes>
@@ -114,6 +128,11 @@
       <childNodeDefinition name="*" defaultPrimaryType="soc:identitydefinition" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="false">
         <requiredPrimaryTypes>
           <requiredPrimaryType>soc:identitydefinition</requiredPrimaryType>
+        </requiredPrimaryTypes>
+      </childNodeDefinition>
+       <childNodeDefinition name="soc:book" defaultPrimaryType="soc:bookdefinition" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" sameNameSiblings="false">
+        <requiredPrimaryTypes>
+          <requiredPrimaryType>soc:bookdefinition</requiredPrimaryType>
         </requiredPrimaryTypes>
       </childNodeDefinition>
     </childNodeDefinitions>

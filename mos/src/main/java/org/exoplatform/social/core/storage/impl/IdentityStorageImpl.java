@@ -24,6 +24,8 @@ import org.chromattic.ext.ntdef.NTFile;
 import org.chromattic.ext.ntdef.Resource;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
+import org.exoplatform.social.core.book.model.Book;
+import org.exoplatform.social.core.chromattic.entity.BookEntity;
 import org.exoplatform.social.core.chromattic.entity.IdentityEntity;
 import org.exoplatform.social.core.chromattic.entity.ProfileEntity;
 import org.exoplatform.social.core.chromattic.entity.ProfileXpEntity;
@@ -185,6 +187,8 @@ public class IdentityStorageImpl extends AbstractStorage implements IdentityStor
     //
     return identityEntity;
   }
+  
+  
 
   protected void _saveIdentity(final Identity identity) throws NodeAlreadyExistsException, NodeNotFoundException {
 
@@ -549,6 +553,49 @@ public class IdentityStorageImpl extends AbstractStorage implements IdentityStor
       throw new IdentityStorageException(IdentityStorageException.Type.FAIL_TO_SAVE_IDENTITY, e1.getMessage(), e1);
     }
   }
+  
+  @Override
+  public void saveBook(Book book) throws IdentityStorageException {
+
+    try {
+      _createBook(book);
+    } catch (NodeAlreadyExistsException e) {
+      throw new IdentityStorageException(IdentityStorageException.Type.FAIL_TO_ADD_OR_MODIFY_PROPERTIES, e.getMessage(), e);
+    }
+
+  }
+  
+  protected BookEntity _createBook(final Book book) throws NodeAlreadyExistsException {
+
+    // Get provider
+    ProviderEntity providerEntity = getProviderRoot().getProvider(book.getProviderId());
+
+    // Create Identity
+    if (providerEntity.getIdentities().containsKey(book.getRemoteId())) {
+      throw new NodeAlreadyExistsException("Identity " + book.getRemoteId() + " already exists");
+    }
+
+    BookEntity bookEntity = providerEntity.createBook();
+    providerEntity.getBooks().put(book.getRemoteId(), bookEntity);
+    bookEntity.setProviderId(book.getProviderId());
+    bookEntity.setRemoteId(book.getRemoteId());
+    bookEntity.setName(book.getName());
+    book.setId(bookEntity.getId());
+
+    //
+    getSession().save();
+
+    //
+    LOG.debug(String.format(
+        "Book %s:%s (%s) created",
+        book.getProviderId(),
+        book.getRemoteId(),
+        book.getId()
+    ));
+
+    //
+    return bookEntity;
+  }
 
   /**
    * {@inheritDoc}
@@ -844,4 +891,6 @@ public class IdentityStorageImpl extends AbstractStorage implements IdentityStor
   public void setStorage(IdentityStorage storage) {
     this.identityStorage = storage;
   }
+
+  
 }

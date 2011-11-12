@@ -17,41 +17,36 @@
 
 package org.exoplatform.social.core.chromattic.entity;
 
-import org.chromattic.api.annotations.Create;
-import org.chromattic.api.annotations.FormattedBy;
+import org.chromattic.api.annotations.Id;
 import org.chromattic.api.annotations.Name;
-import org.chromattic.api.annotations.NamingPrefix;
-import org.chromattic.api.annotations.OneToMany;
 import org.chromattic.api.annotations.Path;
 import org.chromattic.api.annotations.PrimaryType;
-import org.chromattic.ext.format.BaseEncodingObjectFormatter;
-
-import java.util.Map;
+import org.chromattic.api.annotations.Property;
 
 /**
  * @author <a href="mailto:alain.defrance@exoplatform.com">Alain Defrance</a>
  * @version $Revision$
  */
-@PrimaryType(name="soc:providerdefinition")
-@FormattedBy(BaseEncodingObjectFormatter.class)
-@NamingPrefix("soc")
-public abstract class ProviderEntity {
-  
-  @Name
-  public abstract String getName();
+@PrimaryType(name = "soc:bookdefinition")
+public abstract class BookEntity {
+
+  @Id
+  public abstract String getId();
 
   @Path
   public abstract String getPath();
 
-  @OneToMany
-  public abstract Map<String, IdentityEntity> getIdentities();
+  @Property(name = "soc:providerId")
+  public abstract String getProviderId();
+  public abstract void setProviderId(String providerId);
   
-  @OneToMany
-  public abstract Map<String, BookEntity> getBooks();
+  @Name
+  public abstract String getName();
+  public abstract String setName(String name);
+  
+  @Property(name = "soc:remoteId")
+  public abstract String getRemoteId();
+  public abstract void setRemoteId(String remoteId);
 
-  @Create
-  public abstract IdentityEntity createIdentity();
   
-  @Create
-  public abstract BookEntity createBook();
 }

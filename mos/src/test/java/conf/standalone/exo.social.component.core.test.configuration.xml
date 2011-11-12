@@ -123,6 +123,13 @@
   </component>
 
   <!--
+    Book storage components.
+  -->
+  <component>
+    <key>org.exoplatform.social.core.storage.api.BookStorage</key>
+    <type>org.exoplatform.social.core.storage.impl.BookStorageImpl</type>
+  </component>
+  <!--
     Identity storage components.
   -->
   <component>
@@ -608,6 +615,7 @@
           <value>org.exoplatform.social.core.chromattic.entity.ProviderEntity</value>
 
           <value>org.exoplatform.social.core.chromattic.entity.IdentityEntity</value>
+          <value>org.exoplatform.social.core.chromattic.entity.BookEntity</value>
           <value>org.exoplatform.social.core.chromattic.entity.ProfileEntity</value>
 
           <value>org.exoplatform.social.core.chromattic.entity.RelationshipEntity</value>

@@ -18,6 +18,7 @@
 package org.exoplatform.social.core.storage.cache;
 
 import org.exoplatform.services.cache.ExoCache;
+import org.exoplatform.social.core.book.model.Book;
 import org.exoplatform.social.core.identity.model.Identity;
 import org.exoplatform.social.core.identity.model.Profile;
 import org.exoplatform.social.core.profile.ProfileFilter;
@@ -392,5 +393,10 @@ public class CachedIdentityStorage implements IdentityStorage {
 
     storage.addOrModifyProfileProperties(profile);
     
+  }
+
+  @Override
+  public void saveBook(Book book) throws IdentityStorageException {
+    storage.saveBook(book);
   }
 }
