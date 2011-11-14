@@ -49,7 +49,7 @@
             <field name="workspaces">
               <collection type="java.util.ArrayList">
                 <value>
-                  <string>portal-test</string>
+                  <string>social-test</string>
                 </value>
               </collection>
             </field>

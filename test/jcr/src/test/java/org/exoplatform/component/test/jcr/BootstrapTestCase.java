@@ -42,6 +42,9 @@ public class BootstrapTestCase extends AbstractKernelTest
       assertNotNull(repo);
       Session session = repo.getSystemSession("portal-test");
       assertNotNull(session);
+      
+      session = repo.getSystemSession("social-test");
+      assertNotNull(session);
       session.logout();
    }
 }

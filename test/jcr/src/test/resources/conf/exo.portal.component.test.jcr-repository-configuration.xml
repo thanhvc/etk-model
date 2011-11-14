@@ -19,7 +19,7 @@
 
 <repository-service default-repository="repository">
   <repositories>
-    <repository name="repository" system-workspace="system" default-workspace="portal-test">
+    <repository name="repository" system-workspace="system" default-workspace="social-test">
       <security-domain>gatein-domain</security-domain>
       <access-control>optional</access-control>
       <authentication-policy>org.exoplatform.services.jcr.impl.core.access.JAASAuthenticator</authentication-policy>
@@ -107,6 +107,52 @@
           <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
             <properties>
               <property name="index-dir" value="${gatein.test.tmp.dir}/jcr/jcrlucenedb/portal-test"/>
+            </properties>
+          </query-handler>
+          <lock-manager class="org.exoplatform.services.jcr.impl.core.lock.jbosscache.CacheableLockManagerImpl">
+            <properties>
+              <property name="time-out" value="15m" />
+              <property name="jbosscache-configuration" value="conf/exo.portal.component.test.jcr-jbosscache-lock-config.xml" />
+            </properties>
+          </lock-manager>
+        </workspace>
+        
+        <!-- Social system data -->
+        <workspace name="social-test">
+          <container class="org.exoplatform.services.jcr.impl.storage.jdbc.optimisation.CQJDBCWorkspaceDataContainer">
+            <properties>
+              <property name="source-name" value="jdbcexo"/>
+              <property name="dialect" value="auto"/>
+              <property name="multi-db" value="false"/>
+              <property name="update-storage" value="true"/>
+              <property name="max-buffer-size" value="204800"/>
+              <property name="swap-directory" value="${gatein.test.tmp.dir}/jcr/swap/social-test"/>
+            </properties>
+            <value-storages>
+              <value-storage id="social-test" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
+                <properties>
+                  <property name="path" value="${gatein.test.tmp.dir}/jcr/values/social-test"/>
+                </properties>
+                <filters>
+                  <filter property-type="Binary"/>
+                </filters>
+              </value-storage>
+            </value-storages>
+          </container>
+          <initializer class="org.exoplatform.services.jcr.impl.core.ScratchWorkspaceInitializer">
+            <properties>
+              <property name="root-nodetype" value="nt:unstructured"/>
+              <property name="root-permissions" value="*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove"/>
+            </properties>
+          </initializer>
+          <cache enabled="true" class="org.exoplatform.services.jcr.impl.dataflow.persistent.jbosscache.JBossCacheWorkspaceStorageCache">
+            <properties>
+              <property name="jbosscache-configuration" value="conf/exo.portal.component.test.jcr-jbosscache-config.xml" />
+            </properties>
+          </cache>
+          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
+            <properties>
+              <property name="index-dir" value="${gatein.test.tmp.dir}/jcr/jcrlucenedb/social-test"/>
             </properties>
           </query-handler>
           <lock-manager class="org.exoplatform.services.jcr.impl.core.lock.jbosscache.CacheableLockManagerImpl">
