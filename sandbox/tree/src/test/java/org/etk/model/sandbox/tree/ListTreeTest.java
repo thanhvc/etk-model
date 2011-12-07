@@ -16,14 +16,9 @@
  */
 package org.etk.model.sandbox.tree;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-
 import junit.framework.TestCase;
+
+import java.util.*;
 
 /**
  * Created by The eXo Platform SAS Author : eXoPlatform exo@exoplatform.com Oct

@@ -600,7 +600,7 @@
         </value-param>
         <value-param>
           <name>workspace-name</name>
-          <value>social-test</value>
+          <value>portal-test</value>
         </value-param>
         <values-param>
           <name>entities</name>

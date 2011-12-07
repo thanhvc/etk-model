@@ -22,7 +22,9 @@ import java.util.List;
 import org.exoplatform.social.core.identity.model.Identity;
 import org.exoplatform.social.core.identity.model.Profile;
 import org.exoplatform.social.core.profile.ProfileFilter;
+import org.exoplatform.social.core.space.SpaceFilter;
 import org.exoplatform.social.core.storage.IdentityStorageException;
+import org.exoplatform.social.core.storage.SpaceStorageException;
 import org.exoplatform.social.core.storage.impl.IdentityStorageImpl;
 
 /**
@@ -48,6 +50,18 @@ public class SynchronizedIdentityStorage extends IdentityStorageImpl {
       stopSynchronization(created);
     }
 
+  }
+  
+  @Override
+  public int getVisibleSpacesCount(String userId, SpaceFilter spaceFilter) throws SpaceStorageException {
+    boolean created = startSynchronization();
+    try {
+      super.getVisibleSpacesCount(userId, spaceFilter);
+
+    }
+    finally {
+      stopSynchronization(created);
+    }
   }
 
   /**
